@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <!-- Создание таблицы hotels -->
+    <changeSet id="1" author="system">
+        <createTable tableName="hotels">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(2000)"/>
+            <column name="brand" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <!-- Address fields -->
+            <column name="house_number" type="INT"/>
+            <column name="street" type="VARCHAR(255)"/>
+            <column name="city" type="VARCHAR(100)"/>
+            <column name="country" type="VARCHAR(100)"/>
+            <column name="post_code" type="VARCHAR(20)"/>
+            <!-- Contacts fields -->
+            <column name="phone" type="VARCHAR(50)"/>
+            <column name="email" type="VARCHAR(100)"/>
+            <!-- ArrivalTime fields -->
+            <column name="check_in" type="VARCHAR(10)"/>
+            <column name="check_out" type="VARCHAR(10)"/>
+        </createTable>
+
+        <!-- Создание таблицы amenities -->
+        <createTable tableName="amenities">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Создание таблицы связи hotel_amenities -->
+        <createTable tableName="hotel_amenities">
+            <column name="hotel_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amenity_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Добавление внешних ключей -->
+        <addForeignKeyConstraint
+            baseTableName="hotel_amenities"
+            baseColumnNames="hotel_id"
+            constraintName="fk_hotel_amenities_hotel"
+            referencedTableName="hotels"
+            referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+            baseTableName="hotel_amenities"
+            baseColumnNames="amenity_id"
+            constraintName="fk_hotel_amenities_amenity"
+            referencedTableName="amenities"
+            referencedColumnNames="id"/>
+    </changeSet>
+
+    <!-- Добавление начальных данных для amenities -->
+    <changeSet id="2" author="system">
+        <insert tableName="amenities">
+            <column name="name" value="Free parking"/>
+        </insert>
+        <insert tableName="amenities">
+            <column name="name" value="Free WiFi"/>
+        </insert>
+        <insert tableName="amenities">
+            <column name="name" value="Non-smoking rooms"/>
+        </insert>
+        <insert tableName="amenities">
+            <column name="name" value="Concierge"/>
+        </insert>
+        <insert tableName="amenities">
+            <column name="name" value="On-site restaurant"/>
+        </insert>
+        <insert tableName="amenities">
+            <column name="name" value="Fitness center"/>
+        </insert>
+        <insert tableName="amenities">
+            <column name="name" value="Pet-friendly rooms"/>
+        </insert>
+        <insert tableName="amenities">
+            <column name="name" value="Room service"/>
+        </insert>
+        <insert tableName="amenities">
+            <column name="name" value="Business center"/>
+        </insert>
+        <insert tableName="amenities">
+            <column name="name" value="Meeting rooms"/>
+        </insert>
+        <insert tableName="amenities">
+            <column name="name" value="Swimming pool"/>
+        </insert>
+        <insert tableName="amenities">
+            <column name="name" value="Spa"/>
+        </insert>
+        <insert tableName="amenities">
+            <column name="name" value="Airport shuttle"/>
+        </insert>
+    </changeSet>
+
+    <!-- Добавление тестовых данных для отелей -->
+    <changeSet id="3" author="system">
+        <insert tableName="hotels">
+            <column name="name" value="DoubleTree by Hilton Minsk"/>
+            <column name="description" value="The DoubleTree by Hilton Hotel Minsk offers 193 luxurious rooms in the Belorussian capital and stunning views of Minsk city from the hotel's 20th floor..."/>
+            <column name="brand" value="Hilton"/>
+            <column name="house_number" value="9"/>
+            <column name="street" value="Pobediteley Avenue"/>
+            <column name="city" value="Minsk"/>
+            <column name="country" value="Belarus"/>
+            <column name="post_code" value="220004"/>
+            <column name="phone" value="+375 17 309-80-00"/>
+            <column name="email" value="doubletreeminsk.info@hilton.com"/>
+            <column name="check_in" value="14:00"/>
+            <column name="check_out" value="12:00"/>
+        </insert>
+
+        <insert tableName="hotels">
+            <column name="name" value="Marriott Moscow Grand Hotel"/>
+            <column name="description" value="Luxury hotel in the heart of Moscow with spectacular views of the city..."/>
+            <column name="brand" value="Marriott"/>
+            <column name="house_number" value="26"/>
+            <column name="street" value="Tverskaya Street"/>
+            <column name="city" value="Moscow"/>
+            <column name="country" value="Russia"/>
+            <column name="post_code" value="125009"/>
+            <column name="phone" value="+7 495 937-00-00"/>
+            <column name="email" value="moscow.marriott@marriott.com"/>
+            <column name="check_in" value="15:00"/>
+            <column name="check_out" value="12:00"/>
+        </insert>
+    </changeSet>
+
+    <!-- Добавление связей отелей с удобствами -->
+    <changeSet id="4" author="system">
+        <!-- Для Hilton Minsk (id=1) добавляем удобства -->
+        <insert tableName="hotel_amenities">
+            <column name="hotel_id" value="1"/>
+            <column name="amenity_id" value="1"/> <!-- Free parking -->
+        </insert>
+        <insert tableName="hotel_amenities">
+            <column name="hotel_id" value="1"/>
+            <column name="amenity_id" value="2"/> <!-- Free WiFi -->
+        </insert>
+        <insert tableName="hotel_amenities">
+            <column name="hotel_id" value="1"/>
+            <column name="amenity_id" value="3"/> <!-- Non-smoking rooms -->
+        </insert>
+
+        <!-- Для Marriott Moscow (id=2) добавляем удобства -->
+        <insert tableName="hotel_amenities">
+            <column name="hotel_id" value="2"/>
+            <column name="amenity_id" value="2"/> <!-- Free WiFi -->
+        </insert>
+        <insert tableName="hotel_amenities">
+            <column name="hotel_id" value="2"/>
+            <column name="amenity_id" value="6"/> <!-- Fitness center -->
+        </insert>
+        <insert tableName="hotel_amenities">
+            <column name="hotel_id" value="2"/>
+            <column name="amenity_id" value="11"/> <!-- Swimming pool -->
+        </insert>
+    </changeSet>
+</databaseChangeLog>

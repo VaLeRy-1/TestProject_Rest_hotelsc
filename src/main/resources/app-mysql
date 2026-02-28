@@ -1,0 +1,11 @@
+# application-mysql.yml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/hoteldb?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: validate

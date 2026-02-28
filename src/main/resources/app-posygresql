@@ -1,0 +1,11 @@
+# application-postgresql.yml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hoteldb
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
